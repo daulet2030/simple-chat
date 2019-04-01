@@ -1,0 +1,18 @@
+<mat-toolbar color="primary">
+    <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onToggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div><a routerLink="/">Simple Chat and Voting app</a></div>
+    <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
+        <ul fxLayout fxLayoutGap="10px" class="navigation-items">
+            <li *ngIf="!loggedIn"><a (click)="onSignIn()">Log in</a></li>
+            <li *ngIf="loggedIn"><img src="{{user.photo}}" class="user-image" alt="user_photo"></li>
+            <li *ngIf="loggedIn">{{user.name}}</li>
+            <li *ngIf="loggedIn"><a routerLink="/chat">Chats</a></li>
+            <li *ngIf="loggedIn"><a routerLink="/voting">Voting</a></li>
+            <li *ngIf="loggedIn"><a routerLink="/" (click)="onLogout()">Logout</a></li>
+        </ul>
+    </div>
+</mat-toolbar>

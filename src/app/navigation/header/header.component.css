@@ -1,0 +1,19 @@
+a {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover, a:active {
+    color: lightgray
+}
+.navigation-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.user-image {
+    width: 40px;    
+    border-radius: 50%;
+    display: inline-block;
+  }

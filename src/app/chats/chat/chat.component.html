@@ -1,0 +1,18 @@
+<div fxLayout="column">
+  <div> CHAT: {{chat?.name}} (DATE CREATED: {{chat?.date.toDate() | date:'short'}})</div>
+  <div id="messages">
+  <div class="message" *ngFor="let message of messages" [ngClass]="currentUser.name == message.user ? 'to':'from'">
+      <img src="{{message.photo}}" class="user-image" alt="user_photo"> {{message.user}} {{message.date.toDate() | date:'short'}}
+      <h3> {{message.text}} </h3>
+  </div>
+</div>
+  <div fxLayoutAlign="center end" >
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" fxLayoutGap="10px" fxLayout="row" fxLayoutAlign="center center">
+      <mat-form-field>
+        <input ngModel id="message" name="message" type="text" matInput placeholder="Message" required #messageInput="ngModel">
+        <mat-error *ngIf="messageInput.hasError('required') && (messageInput.dirty || messageInput.touched)">Message must not be empty</mat-error>
+      </mat-form-field>
+      <button [disabled]="f.invalid" type="submit" mat-raised-button color="primary">Send</button>
+    </form>
+  </div>
+</div>

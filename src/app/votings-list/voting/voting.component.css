@@ -1,0 +1,16 @@
+.user-image {
+  width: 40px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+button {
+  margin: 5px;
+}
+.myVote {
+  background-color: #2095FE;
+}
+
+.container {
+  margin: 10px 10px 20px;
+}

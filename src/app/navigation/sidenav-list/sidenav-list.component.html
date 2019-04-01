@@ -1,0 +1,17 @@
+<mat-nav-list>
+  <a *ngIf="!loggedIn" mat-list-item (click)="onSignIn()">
+    <mat-icon>input</mat-icon>
+    <span class="nav-list-caption">Login</span></a>
+  <a *ngIf="loggedIn" routerLink="/chat" mat-list-item>
+    <mat-icon>chat</mat-icon>
+    <span class="nav-list-caption" (click)="onClose()">Chats</span></a>
+  <a *ngIf="loggedIn" routerLink="/voting" mat-list-item>
+    <mat-icon>how_to_vote</mat-icon>
+    <span class="nav-list-caption" (click)="onClose()">Voting</span></a>
+  <mat-list-item *ngIf="loggedIn">
+    <button mat-icon-button (click)="onLogout()">
+      <mat-icon>eject</mat-icon>
+      <span class="nav-list-caption">Logout</span>
+    </button>
+  </mat-list-item>
+</mat-nav-list>

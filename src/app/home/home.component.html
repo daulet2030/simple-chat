@@ -1,0 +1,10 @@
+<div  fxLayoutAlign="center center" style="height: 250px;" fxLayoutGap="50px">
+<h1 *ngIf="!loggedIn">Welcome to chatting and voting app, please sign in with Google Account</h1>
+
+<button mat-raised-button color="primary" *ngIf="loggedIn" routerLink="/chat">
+  <mat-icon>chat</mat-icon>
+  <span class="nav-list-caption">Chats</span></button>
+<button mat-raised-button color="primary" *ngIf="loggedIn" routerLink="/voting">
+  <mat-icon>how_to_vote</mat-icon>
+  <span class="nav-list-caption">Voting</span></button>
+</div>
