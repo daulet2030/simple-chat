@@ -1,4 +1,3 @@
-import { VotingService } from './votings-list/voting.service';
 import { FormsModule } from '@angular/forms';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -20,10 +19,11 @@ import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.com
 import { HeaderComponent } from './navigation/header/header.component';
 import { ChatComponent } from './chats/chat/chat.component';
 import { ChatService } from './chats/chat.service';
-import { VotingsListComponent } from './votings-list/votings-list.component';
-import { VotingComponent } from './votings-list/voting/voting.component';
+import { PokersListComponent } from './poker-list/poker-list.component';
 import { HomeComponent } from './home/home.component';
-import {AngularFireDatabaseModule} from "angularfire2/database";
+import {AngularFireDatabaseModule} from 'angularfire2/database';
+import { PokerService } from './poker-list/poker.service';
+import { PokerComponent } from './poker-list/poker/poker.component';
 
 @NgModule({
   declarations: [
@@ -32,8 +32,8 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
     HeaderComponent,
     SidenavListComponent,
     ChatComponent,
-    VotingsListComponent,
-    VotingComponent,
+    PokersListComponent,
+    PokerComponent,
     HomeComponent,
   ],
   imports: [
@@ -48,7 +48,7 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
     AngularFirestoreModule,
     AngularFireDatabaseModule
   ],
-  providers: [AuthService, UIService, ChatService, VotingService],
+  providers: [AuthService, UIService, ChatService, PokerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

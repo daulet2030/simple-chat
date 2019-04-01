@@ -17,7 +17,7 @@ var db = admin.firestore();
 exports.onUserStatusChanged = functions.database
   .ref('.info/connected') // Reference to the Firebase RealTime database key
   .onUpdate(event => {
-    const usersRef = db.collection('/availableVotings'); // Create a reference to the Firestore Collection
+    const usersRef = db.collection('/availablePokers'); // Create a reference to the Firestore Collection
     console.log(usersRef)
     return event.data.ref.once('status')
       .then(status => {

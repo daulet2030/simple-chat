@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material';
 @Injectable()
 export class UIService {
     avaliableChatsLoaded = new Subject<boolean>();
-    avaliableVotingsLoaded = new Subject<boolean>();
+    avaliablePokersLoaded = new Subject<boolean>();
 
     constructor(private snackBar: MatSnackBar) { }
 

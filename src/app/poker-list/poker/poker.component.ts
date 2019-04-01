@@ -1,30 +1,30 @@
 import { AuthService } from './../../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from './../../auth/user.model';
-import { Voting } from './../voting.model';
-import { VotingService } from './../voting.service';
+import { Poker } from '../poker.model';
+import { PokerService } from '../poker.service';
 import { ActivatedRoute } from '@angular/router';
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
-import {NgForm} from "@angular/forms";
+import {Component, OnInit, OnDestroy} from '@angular/core';
+
 
 @Component({
-  selector: 'app-voting',
-  templateUrl: './voting.component.html',
-  styleUrls: ['./voting.component.css']
+  selector: 'app-poker',
+  templateUrl: './poker.component.html',
+  styleUrls: ['./poker.component.css']
 })
-export class VotingComponent implements OnInit, OnDestroy {
+export class PokerComponent implements OnInit, OnDestroy {
   voteId: string;
-  vote: Voting;
+  vote: Poker;
   possibleVotes = [0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100];
-  votingUsers: User[];
+  pokerUsers: User[];
   currentUser: User;
   currentUserSubscription: Subscription;
-  constructor(private route: ActivatedRoute, private voteService: VotingService, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private voteService: PokerService, private authService: AuthService) { }
 
   ngOnInit() {
     this.voteId = this.route.snapshot.paramMap.get('id');
-    this.voteService.getVoting(this.voteId).subscribe(vote => this.vote = vote);
-    this.voteService.getVotingUsers(this.voteId).subscribe((users: any) => this.votingUsers = users);
+    this.voteService.getPoker(this.voteId).subscribe(vote => this.vote = vote);
+    this.voteService.getPokerUsers(this.voteId).subscribe((users: any) => this.pokerUsers = users);
     this.currentUserSubscription = this.authService.getCurrentUserSubscription().subscribe(user => {
       if (user) {
         this.currentUser = { id: user.uid, email: user.email, name: user.displayName, photo: user.photoURL };
@@ -46,7 +46,7 @@ export class VotingComponent implements OnInit, OnDestroy {
   }
   // @HostListener('window:unload', ['$event'])
   // unloadHandler(event) {
-  //   this.voteService.exitVoting(this.voteId);
+  //   this.voteService.exitPoker(this.voteId);
   //   var now = new Date().getTime();
   //   while(new Date().getTime() < now + 20000);
   // }
@@ -57,7 +57,7 @@ export class VotingComponent implements OnInit, OnDestroy {
   // }
 
   ngOnDestroy() {
-    // this.voteService.exitVoting(this.voteId);
+    // this.voteService.exitPoker(this.voteId);
     this.currentUserSubscription.unsubscribe();
   }
 }

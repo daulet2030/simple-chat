@@ -12,21 +12,21 @@
   </div>
   <div fxLayout="row" fxLayout.xs="column-reverse"  class="container">
     <div fxLayout="column" fxFlex="50%" style="padding-left: 10%">
-      <div *ngFor="let user of votingUsers" [ngClass]="currentUser.name == user.name ? 'me':'notme'">
+      <div *ngFor="let user of pokerUsers" [ngClass]="currentUser.name == user.name ? 'me':'notme'">
         <a *ngIf="currentUser.name != user.name && currentUser.email == vote.createdBy" (click)="onEvictUser(user)">
           <mat-icon>clear</mat-icon>
         </a>
         <mat-icon *ngIf="currentUser.name == user.name && currentUser.email == vote.createdBy">arrow_forward</mat-icon>
         <img src="{{user.photo}}" class="user-image" alt="user_photo"> {{user.name}} <span
-        *ngIf="(vote?.votingFinished && user.voted) || (currentUser.name == user.name && user.voted)">:{{user.vote}}</span>
+        *ngIf="(vote?.pokerFinished && user.voted) || (currentUser.name == user.name && user.voted)">:{{user.vote}}</span>
         <mat-icon *ngIf="user.voted">done_outline</mat-icon>
       </div>
     </div>
     <div fxLayoutAlign="center center" fxFlex="50%">
-      <h2 *ngIf="vote?.votingFinished">Total:</h2>
-      <h3 *ngIf="!vote?.votingFinished">Awaiting votes...</h3>
-      <mat-spinner *ngIf="!vote?.votingFinished"></mat-spinner>
-      <h1 *ngIf="vote?.votingFinished">{{vote?.totalVote | number}} </h1>
+      <h2 *ngIf="vote?.pokerFinished">Total:</h2>
+      <h3 *ngIf="!vote?.pokerFinished">Awaiting votes...</h3>
+      <mat-spinner *ngIf="!vote?.pokerFinished"></mat-spinner>
+      <h1 *ngIf="vote?.pokerFinished">{{vote?.totalVote | number}} </h1>
     </div>
   </div>
 

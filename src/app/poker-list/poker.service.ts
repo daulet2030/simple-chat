@@ -1,40 +1,40 @@
 import { User } from './../auth/user.model';
-import { Voting } from './voting.model';
+import { Poker } from './poker.model';
 import { AuthService } from '../auth/auth.service';
 import { Subscription, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { UIService } from '../shared/ui.service';
 import { AngularFirestore } from 'angularfire2/firestore';
 import {map, take} from 'rxjs/operators';
-import {forEach} from "@angular/router/src/utils/collection";
 
 @Injectable()
-export class VotingService {
-    private availableVotings: Voting[] = [];
-    availableVotingsChanged = new Subject<Voting[]>();
+export class PokerService {
+    private availablePokers: Poker[] = [];
+    availablePokersChanged = new Subject<Poker[]>();
 
     private subscriptions: Subscription[] = [];
 
     constructor(private db: AngularFirestore, private uiService: UIService, private authService: AuthService) { }
 
-    public createVoting(name: string) {
-        this.db.collection('availableVotings').add({ name: name, count: 1, date: new Date(), createdBy: this.authService.getCurrentUser().email})
+    public createPoker(name: string) {
+        this.db.collection('availablePokers')
+        .add({ name: name, count: 1, date: new Date(), createdBy: this.authService.getCurrentUser().email})
             .then(result => {
-                this.uiService.showNotification('Voting successfully created!', null, 3000);
+                this.uiService.showNotification('Poker successfully created!', null, 3000);
             }).catch(error => {
-                this.uiService.showNotification('Error saving voting!', null, 3000);
+                this.uiService.showNotification('Error saving poker!', null, 3000);
             });
     }
-    public getVoting(id: string) {
+    public getPoker(id: string) {
         this.addCurrentUser(id);
-        return this.db.doc<Voting>('availableVotings/' + id).valueChanges();
+        return this.db.doc<Poker>('availablePokers/' + id).valueChanges();
     }
-    public exitVoting(id: string) {
+    public exitPoker(id: string) {
       const user = this.authService.getCurrentUser();
       this.evictUser(id, user.email);
     }
-    evictUser(voteId, userMail){
-      this.db.doc<Voting>('availableVotings/' + voteId)
+    evictUser(voteId, userMail) {
+      this.db.doc<Poker>('availablePokers/' + voteId)
         .collection<any>('users', ref => ref.where('email', '==', userMail))
         .snapshotChanges().pipe(take(1)).pipe(map(
         docData => {
@@ -46,16 +46,16 @@ export class VotingService {
           });
         }
       )).subscribe(value => {
-        if(value && value.length > 0){
-          this.db.doc('availableVotings/' + voteId + '/users/'+value[0].docId).delete();
+        if (value && value.length > 0) {
+          this.db.doc('availablePokers/' + voteId + '/users/' + value[0].docId).delete();
           this.reCalculateVote(voteId);
         } else {
           console.log('doesnt exits');
         }
       });
     }
-    public getVotingUsers(id: string) {
-        return this.db.doc('availableVotings/' + id).collection<User[]>('users').snapshotChanges().pipe(map(
+    public getPokerUsers(id: string) {
+        return this.db.doc('availablePokers/' + id).collection<User[]>('users').snapshotChanges().pipe(map(
             docData => {
                 return docData.map(doc => {
                     return {
@@ -68,9 +68,9 @@ export class VotingService {
     }
 
 
-    fetchAvailableVotings() {
-        this.uiService.avaliableVotingsLoaded.next(false);
-        this.subscriptions.push(this.db.collection('availableVotings').snapshotChanges().pipe(map(
+    fetchAvailablePokers() {
+        this.uiService.avaliablePokersLoaded.next(false);
+        this.subscriptions.push(this.db.collection('availablePokers').snapshotChanges().pipe(map(
             docData => {
                 return docData.map(doc => {
                     return {
@@ -79,26 +79,26 @@ export class VotingService {
                     };
                 });
             }
-        )).subscribe((results: Voting[]) => {
-            this.availableVotings = results;
-            this.availableVotingsChanged.next([...this.availableVotings]);
-            this.uiService.avaliableVotingsLoaded.next(true);
+        )).subscribe((results: Poker[]) => {
+            this.availablePokers = results;
+            this.availablePokersChanged.next([...this.availablePokers]);
+            this.uiService.avaliablePokersLoaded.next(true);
         }, error => {
-            this.uiService.avaliableVotingsLoaded.next(true);
-            this.uiService.showNotification('Fetching available votings failed!', null, 3000);
-            this.availableVotingsChanged.next(null);
+            this.uiService.avaliablePokersLoaded.next(true);
+            this.uiService.showNotification('Fetching available pokers failed!', null, 3000);
+            this.availablePokersChanged.next(null);
         }));
     }
 
     addCurrentUser(id) {
         const user = this.authService.getCurrentUser();
-        this.db.doc<Voting>('availableVotings/' + id)
+        this.db.doc<Poker>('availablePokers/' + id)
           .collection<any>('users', ref => ref.where('email', '==', user.email))
           .valueChanges().pipe(take(1)).subscribe(value => {
-            if(value && value.length > 0){
+            if (value && value.length > 0) {
               console.log('exists');
             } else {
-              this.db.doc<Voting>('availableVotings/' + id).collection<any>('users').add(user);
+              this.db.doc<Poker>('availablePokers/' + id).collection<any>('users').add(user);
               this.resetVote(id);
             }
         });
@@ -107,7 +107,7 @@ export class VotingService {
 
     vote(id, vote: number) {
       const user = this.authService.getCurrentUser();
-      this.db.doc<Voting>('availableVotings/' + id)
+      this.db.doc<Poker>('availablePokers/' + id)
         .collection<any>('users', ref => ref.where('email', '==', user.email))
         .snapshotChanges().pipe(take(1)).pipe(map(
         docData => {
@@ -119,39 +119,39 @@ export class VotingService {
           });
         }
       )).subscribe(value => {
-        if(value && value.length > 0){
-          this.db.doc('availableVotings/' + id + '/users/'+value[0].userId).update({voted: true, vote: +vote});
+        if (value && value.length > 0) {
+          this.db.doc('availablePokers/' + id + '/users/' + value[0].userId).update({voted: true, vote: +vote});
           this.reCalculateVote(id);
         } else {
-          console.log('User doesnt exits in this voting!');
+          console.log('User doesnt exits in this poker!');
         }
       });
     }
 
   private reCalculateVote(id) {
-    this.db.doc<Voting>('availableVotings/' + id).collection<any>('users').valueChanges()
+    this.db.doc<Poker>('availablePokers/' + id).collection<any>('users').valueChanges()
       .pipe(take(1)).subscribe((users: User[]) => {
-      let votingFinished = true;
-      let counter: number = 0;
-      let total: number = 0;
-      for (let votedUser of users) {
+      let pokerFinished = true;
+      let counter = 0;
+      let total = 0;
+      for (const votedUser of users) {
         if (!votedUser.voted) {
-          votingFinished = false;
+          pokerFinished = false;
         } else {
           counter++;
           total += votedUser.vote;
         }
       }
-      if (votingFinished) {
-        this.db.doc('availableVotings/' + id).update({votingFinished: true, totalVote: total / counter});
+      if (pokerFinished) {
+        this.db.doc('availablePokers/' + id).update({pokerFinished: true, totalVote: total / counter});
       }
-    })
+    });
   }
 
   resetVote(id) {
       const user = this.authService.getCurrentUser();
-      this.db.doc('availableVotings/' + id).update({votingFinished: false, totalVote: 0});
-      this.db.doc<Voting>('availableVotings/' + id).collection<any>('users')
+      this.db.doc('availablePokers/' + id).update({pokerFinished: false, totalVote: 0});
+      this.db.doc<Poker>('availablePokers/' + id).collection<any>('users')
         .snapshotChanges().pipe(take(1)).pipe(map(
         docData => {
           return docData.map(doc => {
@@ -161,9 +161,9 @@ export class VotingService {
           });
         }
       )).subscribe(votedUsers => {
-        if(votedUsers && votedUsers.length > 0){
-          for(let votedUser of votedUsers) {
-            this.db.doc('availableVotings/' + id + '/users/'+votedUser.userId).update({voted: false});
+        if (votedUsers && votedUsers.length > 0) {
+          for (const votedUser of votedUsers) {
+            this.db.doc('availablePokers/' + id + '/users/' + votedUser.userId).update({voted: false});
           }
         }});
     }

@@ -1,11 +1,11 @@
 import { User } from '../auth/user.model';
-export interface Voting {
+export interface Poker {
     id: string;
     name: string;
     count: number;
     date?: any;
     users?: User[];
-    votingFinished?: boolean;
+    pokerFinished?: boolean;
     totalVote?: number;
     createdBy: string;
 }

@@ -5,9 +5,9 @@
   <a *ngIf="loggedIn" routerLink="/chat" mat-list-item>
     <mat-icon>chat</mat-icon>
     <span class="nav-list-caption" (click)="onClose()">Chats</span></a>
-  <a *ngIf="loggedIn" routerLink="/voting" mat-list-item>
+  <a *ngIf="loggedIn" routerLink="/poker" mat-list-item>
     <mat-icon>how_to_vote</mat-icon>
-    <span class="nav-list-caption" (click)="onClose()">Voting</span></a>
+    <span class="nav-list-caption" (click)="onClose()">Planning poker</span></a>
   <mat-list-item *ngIf="loggedIn">
     <button mat-icon-button (click)="onLogout()">
       <mat-icon>eject</mat-icon>
